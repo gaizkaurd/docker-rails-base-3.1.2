@@ -26,8 +26,6 @@ COPY package.json yarn.lock /app/
 ENV CYPRESS_INSTALL_BINARY=0
 # Avoid error "digital envelope routines::initialization error" while compiling assets with Webpack
 # due to OpenSSL 3.0 (included in Alpine 3.17)
-ENV NODE_OPTIONS=--openssl-legacy-provider
-RUN yarn install --frozen-lockfile
 ####
 
 ##### Install standard gems
