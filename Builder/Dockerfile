@@ -61,13 +61,7 @@ ONBUILD COPY . /app
 #
 ONBUILD RUN mv config/credentials.yml.enc config/credentials.yml.enc.bak 2>/dev/null || true
 ONBUILD RUN mv config/credentials config/credentials.bak 2>/dev/null || true
-ONBUILD RUN --mount=type=secret,id=npmrc,dst=/root/.npmrc \
-            --mount=type=secret,id=yarnrc,dst=/root/.yarnrc.yml \
-            yarn install
-ONBUILD RUN RAILS_ENV=production \
-            SECRET_KEY_BASE=dummy \
-            RAILS_MASTER_KEY=dummy \
-            bundle exec rails assets:precompile
+
 ONBUILD RUN mv config/credentials.yml.enc.bak config/credentials.yml.enc 2>/dev/null || true
 ONBUILD RUN mv config/credentials.bak config/credentials 2>/dev/null || true
 
@@ -76,5 +70,5 @@ ONBUILD RUN mv config/credentials.bak config/credentials 2>/dev/null || true
 # Normally it is not needed in the resulting image, because it was compiled
 # to `public/`. But if the app uses importmaps, the folder is still required
 # for pinning and must not be removed.
-ONBUILD RUN rm -rf node_modules yarn.lock .yarn tmp/cache vendor/bundle test spec app/packs
+ONBUILD RUN rm -rf node_modules  tmp/cache vendor/bundle test spec app/packs
 ONBUILD RUN if [ ! -f config/importmap.rb ]; then rm -rf app/javascript; fi
